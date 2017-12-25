@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1EED04B111AB10BDDE2EC142 /* Pods_PinItTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B897E4479083A91967139E7 /* Pods_PinItTests.framework */; };
+		2A00A9161FF091CE009A8CF5 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A00A9151FF091CE009A8CF5 /* ImageService.swift */; };
 		6991E86F9BD6C887E4C238EA /* Pods_PinItUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5B49714FEBE524FAC9BFC4B /* Pods_PinItUITests.framework */; };
 		D8518F1A0BE1A66D77E1A133 /* Pods_PinIt.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D34DFCC786A5134534361D82 /* Pods_PinIt.framework */; };
 		ECC559341FD987F000CF1D77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECC559331FD987F000CF1D77 /* AppDelegate.swift */; };
@@ -45,6 +46,7 @@
 
 /* Begin PBXFileReference section */
 		10BDDFC1CDB7383D0110F56E /* Pods-PinIt.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinIt.release.xcconfig"; path = "Pods/Target Support Files/Pods-PinIt/Pods-PinIt.release.xcconfig"; sourceTree = "<group>"; };
+		2A00A9151FF091CE009A8CF5 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		671422099C13E190772B8C1C /* Pods-PinIt.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinIt.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PinIt/Pods-PinIt.debug.xcconfig"; sourceTree = "<group>"; };
 		7B897E4479083A91967139E7 /* Pods_PinItTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PinItTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AE7D5588E1F2F11EE7143E57 /* Pods-PinItTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PinItTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PinItTests/Pods-PinItTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 			isa = PBXGroup;
 			children = (
 				ECE50AB01FEE964B006B0EE5 /* PinItService.swift */,
+				2A00A9151FF091CE009A8CF5 /* ImageService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -530,6 +533,7 @@
 				ECE50AB31FEEA043006B0EE5 /* Pin.swift in Sources */,
 				ECE50AAF1FEE8BD6006B0EE5 /* HomeTableViewController.swift in Sources */,
 				ECE50AB81FEEC3AC006B0EE5 /* ClassExtensions.swift in Sources */,
+				2A00A9161FF091CE009A8CF5 /* ImageService.swift in Sources */,
 				ECE50AB61FEEA12B006B0EE5 /* User.swift in Sources */,
 				ECE50ABA1FEEC7BC006B0EE5 /* IntermediaryModels.swift in Sources */,
 				ECC559341FD987F000CF1D77 /* AppDelegate.swift in Sources */,
@@ -704,7 +708,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PinIt/PinIt.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9R6AME9SXD;
+				DEVELOPMENT_TEAM = D545Y7EKLY;
 				INFOPLIST_FILE = PinIt/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -723,7 +727,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = PinIt/PinIt.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 9R6AME9SXD;
+				DEVELOPMENT_TEAM = D545Y7EKLY;
 				INFOPLIST_FILE = PinIt/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

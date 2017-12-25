@@ -28,7 +28,7 @@ final class StyleManager {
     }
     
     static func borderColor() -> UIColor {
-        return FlatGrayDark()
+        return FlatGray()
     }
     
     static func theme() -> UIColor {

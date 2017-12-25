@@ -19,6 +19,7 @@ class HomeTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
         // Config table cell color
         cardView.layer.borderColor = StyleManager.borderColor().cgColor
         actionView.layer.borderColor = StyleManager.borderColor().cgColor

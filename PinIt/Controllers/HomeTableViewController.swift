@@ -22,6 +22,13 @@ class HomeTableViewController: UITableViewController {
         // Remove table cell separator
         self.tableView.separatorColor = .clear
         
+        // Config resizable table cells
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 340
+        
+        // Enable network activity indicator
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         fetchPins()
     }
 
@@ -48,6 +55,35 @@ class HomeTableViewController: UITableViewController {
         cell.pinCaptionLabel.text = pin.title
         cell.likeButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 16)
         cell.likeButton.setTitle(String.fontAwesomeIcon(name: .star) + " " + String(pin.likedBy.count), for: .normal)
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
+        ImageService.shared.fetchImage(URL: pin.imageURL) { (image) in
+            DispatchQueue.main.async {
+                if let image = image {
+                    ImageService.shared.insertImageandResize(with: image, into: cell.pinImageView)
+                    
+                    UIView.setAnimationsEnabled(false)
+                    tableView.beginUpdates()
+                    tableView.endUpdates()
+                    UIView.setAnimationsEnabled(true)
+                } else {
+                    // TODO: insert placeholder image
+                }
+            }
+        }
+        
+        ImageService.shared.fetchImage(URL: pin.owner.profileImageURL) { (profileImage) in
+            DispatchQueue.main.async {
+                if let image = profileImage {
+                    cell.userImageView.image = image
+                } else {
+                    // TODO: insert placeholder image
+                }
+            }
+        }
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
 
         return cell
     }
@@ -55,6 +91,7 @@ class HomeTableViewController: UITableViewController {
 }
 
 extension HomeTableViewController {
+    
     func configureTitleBar() {
         let attributes = [
             NSAttributedStringKey.font: UIFont.fontAwesome(ofSize: 20),
@@ -67,15 +104,19 @@ extension HomeTableViewController {
     
     func fetchPins() {
         PinItService.shared.getAllPins(completion: { (fetchedPinsResponse) in
-            if let fetchedPinsResponse = fetchedPinsResponse,
-                fetchedPinsResponse.success,
-                let pins = fetchedPinsResponse.pins {
-                self.pins = pins
-                self.tableView.reloadData()
-            } else {
-                self.displayError(message: fetchedPinsResponse?.message)
+            DispatchQueue.main.async {
+                if let fetchedPinsResponse = fetchedPinsResponse,
+                    fetchedPinsResponse.success,
+                    let pins = fetchedPinsResponse.pins {
+                    self.pins = pins
+                    self.tableView.reloadData()
+                } else {
+                    self.displayError(message: fetchedPinsResponse?.message)
+                }
             }
         })
+        
+        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
     func displayError(message: String?) {
