@@ -20,4 +20,5 @@ struct Pin:Codable {
 struct PinWrapper {
     var pin: Pin
     var pinImage: UIImage?
+    var userImage: UIImage?
 }

@@ -60,14 +60,8 @@ class HomeTableViewController: UITableViewController {
             ImageService.shared.insertImageandResize(with: image, into: cell.pinImageView)
         }
         
-        ImageService.shared.fetchImage(URL: pinWrapper.pin.owner.profileImageURL) { (profileImage) in
-            DispatchQueue.main.async {
-                if let image = profileImage {
-                    cell.userImageView.image = image
-                } else {
-                    // TODO: insert placeholder image
-                }
-            }
+        if let userImage = pinWrapper.userImage {
+            cell.userImageView.image = userImage
         }
         
         return cell
@@ -95,10 +89,10 @@ extension HomeTableViewController {
                     let pins = fetchedPinsResponse.pins {
                     
                     self.pins = pins.map({ (pin) -> PinWrapper in
-                        return PinWrapper(pin: pin, pinImage: nil)
+                        return PinWrapper(pin: pin, pinImage: nil, userImage: nil)
                     })
                     
-                    // Fetch each pin image and assign to pinWrapper.pinImage
+                    // Fetch each pin+user image and assign to pinWrapper
                     for i in 0..<self.pins.count {
                         UIApplication.shared.isNetworkActivityIndicatorVisible = true
                         
@@ -114,6 +108,18 @@ extension HomeTableViewController {
                                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                             }
                         })
+                        
+                        ImageService.shared.fetchImage(URL: self.pins[i].pin.owner.profileImageURL) { (profileImage) in
+                            DispatchQueue.main.async {
+                                if let image = profileImage {
+                                    self.pins[i].userImage = image
+                                } else {
+                                    // TODO: insert placeholder image
+                                }
+                                
+                                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                            }
+                        }
                     }
                     
                 } else {
