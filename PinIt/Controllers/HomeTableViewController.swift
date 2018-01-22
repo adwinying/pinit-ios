@@ -11,7 +11,7 @@ import FontAwesome_swift
 
 class HomeTableViewController: UITableViewController {
     
-    var pins: [Pin] = []
+    var pins: [PinWrapper] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,29 +51,16 @@ class HomeTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cardCell", for: indexPath) as! HomeTableViewCell
 
         // Configure the cell...
-        let pin = pins[indexPath.row]
-        cell.pinCaptionLabel.text = pin.title
+        let pinWrapper = pins[indexPath.row]
+        cell.pinCaptionLabel.text = pinWrapper.pin.title
         cell.likeButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 16)
-        cell.likeButton.setTitle(String.fontAwesomeIcon(name: .star) + " " + String(pin.likedBy.count), for: .normal)
+        cell.likeButton.setTitle(String.fontAwesomeIcon(name: .star) + " " + String(pinWrapper.pin.likedBy.count), for: .normal)
         
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
-        ImageService.shared.fetchImage(URL: pin.imageURL) { (image) in
-            DispatchQueue.main.async {
-                if let image = image {
-                    ImageService.shared.insertImageandResize(with: image, into: cell.pinImageView)
-                    
-                    UIView.setAnimationsEnabled(false)
-                    tableView.beginUpdates()
-                    tableView.endUpdates()
-                    UIView.setAnimationsEnabled(true)
-                } else {
-                    // TODO: insert placeholder image
-                }
-            }
+        if let image = pinWrapper.pinImage {
+            ImageService.shared.insertImageandResize(with: image, into: cell.pinImageView)
         }
         
-        ImageService.shared.fetchImage(URL: pin.owner.profileImageURL) { (profileImage) in
+        ImageService.shared.fetchImage(URL: pinWrapper.pin.owner.profileImageURL) { (profileImage) in
             DispatchQueue.main.async {
                 if let image = profileImage {
                     cell.userImageView.image = image
@@ -83,8 +70,6 @@ class HomeTableViewController: UITableViewController {
             }
         }
         
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
-
         return cell
     }
 
@@ -108,15 +93,36 @@ extension HomeTableViewController {
                 if let fetchedPinsResponse = fetchedPinsResponse,
                     fetchedPinsResponse.success,
                     let pins = fetchedPinsResponse.pins {
-                    self.pins = pins
-                    self.tableView.reloadData()
+                    
+                    self.pins = pins.map({ (pin) -> PinWrapper in
+                        return PinWrapper(pin: pin, pinImage: nil)
+                    })
+                    
+                    // Fetch each pin image and assign to pinWrapper.pinImage
+                    for i in 0..<self.pins.count {
+                        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+                        
+                        ImageService.shared.fetchImage(URL: self.pins[i].pin.imageURL, completion: { (image) in
+                            DispatchQueue.main.async {
+                                if let image = image {
+                                    self.pins[i].pinImage = image
+                                } else {
+                                    self.pins[i].pinImage = UIImage(named: "missing")
+                                }
+                            
+                                self.tableView.reloadData()
+                                UIApplication.shared.isNetworkActivityIndicatorVisible = false
+                            }
+                        })
+                    }
+                    
                 } else {
                     self.displayError(message: fetchedPinsResponse?.message)
+                    UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 }
             }
         })
         
-        UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
     
     func displayError(message: String?) {

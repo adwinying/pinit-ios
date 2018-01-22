@@ -6,6 +6,7 @@
 //  Copyright © 2017 Adwin Ying. All rights reserved.
 //
 
+import UIKit
 import Foundation
 
 struct Pin:Codable {
@@ -14,4 +15,9 @@ struct Pin:Codable {
     var owner: User
     var imageURL: String
     var likedBy: [String]
+}
+
+struct PinWrapper {
+    var pin: Pin
+    var pinImage: UIImage?
 }

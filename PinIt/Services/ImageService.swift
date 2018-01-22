@@ -17,7 +17,7 @@ class ImageService {
             .validate()
             .responseData { (response) in
                 guard response.result.isSuccess else {
-                    print("HTTP request error: \(String(describing: response.result.error))")
+                    print("[ImageService] HTTP request error: \(String(describing: response.result.error))")
                     completion(nil)
                     return
                 }
